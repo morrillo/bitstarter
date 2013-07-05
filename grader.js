@@ -29,6 +29,10 @@ var CHECKSFILE_DEFAULT = "checks.json";
 var URL_DEFAULT = "http://young-tundra-5673.herokuapp.com";
 var res = require('restler');
 
+var assertUrlExists = function(inUrl) {
+	return inUrl;
+};
+
 var assertFileExists = function(infile) {
     var instr = infile.toString();
     if(!fs.existsSync(instr)) {
@@ -67,9 +71,13 @@ if(require.main == module) {
     program
         .option('-c, --checks <check_file>', 'Path to checks.json', clone(assertFileExists), CHECKSFILE_DEFAULT)
         .option('-f, --file <html_file>', 'Path to index.html', clone(assertFileExists), HTMLFILE_DEFAULT)
-        .option('-u, --url <html_file>', 'URL to check', clone(assertFileExists), URL_DEFAULT)
+        .option('-u, --url <html_file>', 'URL to check', clone(assertUrlExists), URL_DEFAULT)
         .parse(process.argv);
-    var checkJson = checkHtmlFile(program.file, program.checks);
+    console.log(program.file);
+    console.log(program.checks);
+    console.log(program.url);
+    // var checkJson = checkHtmlFile(program.file, program.checks);
+    var checkJson = checkHtmlFile(program.url, program.checks);
     var outJson = JSON.stringify(checkJson, null, 4);
     console.log(outJson);
 } else {
